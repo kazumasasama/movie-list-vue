@@ -3,7 +3,7 @@
     <p><input type="text" v-model="search"> <button>search</button></p>
     <button class="btn">Show Movies Only</button>
     <button class="btn">Show Games Only</button>
-    <div v-for="(movie, i) in reindexedMovies" :key="i">
+    <div v-for="(movie, i) in displayItems" :key="i">
       <hr>
         <hr>
         <small>{{ movie.theme }}</small>
@@ -13,7 +13,7 @@
     </div>
     <hr>
     <hr>
-    <p>Showing {{ reindexedMovies.length }} of {{ moviesLength }}</p>
+    <p>Showing {{ displayItems.length }} of {{ moviesLength }}</p>
     <div>
       <button
         v-if="currentPage != 1"
@@ -39,6 +39,7 @@ import axios from "axios"
     data() {
       return {
         movies: [],
+        displayItems: [],
         filteredMovies: [],
         fifteenMovies: [],
         reindexedMovies: [],
@@ -71,16 +72,16 @@ import axios from "axios"
           }
           this.fifteenMovies.push(fifteenMovies);
           this.pages.push(pages ++);
-          this.reindexedMovies = this.fifteenMovies[0];
+          this.displayItems = this.fifteenMovies[0];
         })
       },
       nextPage() {
         this.currentPage++;
-        this.reindexedMovies = this.fifteenMovies[this.currentPage - 1];
+        this.displayItems = this.fifteenMovies[this.currentPage - 1];
       },
       prevPage() {
         this.currentPage--;
-        this.reindexedMovies = this.fifteenMovies[this.currentPage - 1];
+        this.displayItems = this.fifteenMovies[this.currentPage - 1];
       },
     },
   }
