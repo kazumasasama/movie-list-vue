@@ -1,8 +1,9 @@
 <template>
   <div class="home">
     <p><input type="text" v-model="search"> <button>search</button></p>
-    <button class="btn">Show Movies Only</button>
-    <button class="btn">Show Games Only</button>
+    <button class="btn" @click="showMovies()">Show Movies Only</button>
+    <button class="btn" @click="showGames()">Show Games Only</button>
+    <button class="btn" @click="showAll()">Show All</button>
     <div v-for="(movie, i) in displayItems" :key="i">
       <hr>
         <hr>
@@ -11,10 +12,10 @@
         <p>Source: {{ movie.source }}</p>
         <p>Quote: {{ movie.quote }}</p>
     </div>
-    <hr>
-    <hr>
-    <p>Showing {{ displayItems.length }} of {{ moviesLength }}</p>
-    <div>
+    <div v-if="!filtered">
+      <hr>
+      <hr>
+      <p>Showing {{ displayItems.length }} of {{ moviesLength }}</p>
       <button
         v-if="currentPage != 1"
         class="btn"
@@ -47,6 +48,7 @@ import axios from "axios"
         currentPage: 1,
         moviesLength: 0,
         search: "",
+        filtered: false,
       }
     },
     created() {
@@ -82,6 +84,18 @@ import axios from "axios"
       prevPage() {
         this.currentPage--;
         this.displayItems = this.fifteenMovies[this.currentPage - 1];
+      },
+      showMovies() {
+        this.displayItems = this.movies.filter((v) => v.theme == "movies" );
+        this.filtered = true;
+      },
+      showGames() {
+        this.displayItems = this.movies.filter((v) => v.theme == "games" );
+        this.filtered = true;
+      },
+      showAll() {
+        this.displayItems = this.fifteenMovies[0];
+        this.filtered = false;
       },
     },
   }
